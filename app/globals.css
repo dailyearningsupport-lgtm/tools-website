@@ -1,4 +1,9 @@
-body {
-  margin: 0;
-  font-family: Arial;
+import "./globals.css";
+
+export default function RootLayout({ children }: any) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
