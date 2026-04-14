@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import jsPDF from "jspdf";
 
 export default function PassportTool() {
   const [image, setImage] = useState(null);
@@ -17,8 +18,30 @@ export default function PassportTool() {
     }
   };
 
+  // ✅ PDF DOWNLOAD FUNCTION (UPDATED)
   const downloadImage = () => {
-    window.print();
+    if (!image) return;
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const imgWidth = 35;
+    const imgHeight = 45;
+
+    let x = 10;
+    let y = 10;
+
+    for (let i = 0; i < count; i++) {
+      pdf.addImage(image, "JPEG", x, y, imgWidth, imgHeight);
+
+      x += imgWidth + 5;
+
+      if (x > 170) {
+        x = 10;
+        y += imgHeight + 5;
+      }
+    }
+
+    pdf.save("passport-photos.pdf");
   };
 
   return (
@@ -79,8 +102,9 @@ export default function PassportTool() {
 
         <br /><br />
 
+        {/* DOWNLOAD BUTTON */}
         <button onClick={downloadImage} style={{ width: "100%" }}>
-          Download / Print
+          Download PDF
         </button>
       </div>
 
