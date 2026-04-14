@@ -10,6 +10,7 @@ const tools = [
   {
     title: "Passport Photo Maker",
     desc: "Make passport size photos",
+    link: "/passport"
   },
   {
     title: "Image Tools",
@@ -57,7 +58,15 @@ export default function Home() {
             }}>
               <h3>{tool.title}</h3>
               <p>{tool.desc}</p>
-              <button>Use Tool</button>
+
+              {tool.link ? (
+                <a href={tool.link}>
+                  <button>Open Tool</button>
+                </a>
+              ) : (
+                <button>Coming Soon</button>
+              )}
+
             </div>
           ))}
         </div>
