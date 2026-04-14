@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 
-export default function PassportPhoto() {
+export default function PassportTool() {
   const [image, setImage] = useState(null);
+  const [count, setCount] = useState(6);
+  const [brightness, setBrightness] = useState(100);
+  const [grayscale, setGrayscale] = useState(0);
+  const [rotate, setRotate] = useState(0);
+  const [flip, setFlip] = useState(false);
 
   const handleUpload = (e) => {
     const file = e.target.files[0];
@@ -12,32 +17,102 @@ export default function PassportPhoto() {
     }
   };
 
+  const downloadImage = () => {
+    window.print();
+  };
+
   return (
-    <div style={{ padding: 20 }}>
-      <h1>📸 Passport Photo Maker</h1>
+    <div style={{ display: "flex", gap: 20, padding: 20 }}>
 
-      <input type="file" onChange={handleUpload} />
+      {/* LEFT PANEL */}
+      <div style={{
+        width: 300,
+        border: "1px solid #ddd",
+        padding: 15,
+        borderRadius: 10
+      }}>
+        <h2>PASSPORT SIZE PHOTO</h2>
 
-      {image && (
-        <div style={{ marginTop: 20 }}>
-          <img
-            src={image}
-            alt="preview"
-            style={{
-              width: 200,
-              height: 250,
-              objectFit: "cover",
-              border: "2px solid #000"
-            }}
-          />
+        <input type="file" onChange={handleUpload} /><br /><br />
 
-          <div style={{ marginTop: 10 }}>
-            <a href={image} download="passport-photo.jpg">
-              <button>Download Photo</button>
-            </a>
-          </div>
+        <input placeholder="Name" style={{ width: "100%" }} /><br /><br />
+        <input placeholder="Date" style={{ width: "100%" }} /><br /><br />
+
+        <input
+          type="number"
+          placeholder="Number (1-36)"
+          value={count}
+          onChange={(e) => setCount(e.target.value)}
+          style={{ width: "100%" }}
+        /><br /><br />
+
+        <select style={{ width: "100%" }}>
+          <option>A4 Sheet</option>
+          <option>4x6</option>
+        </select>
+
+        <hr />
+
+        {/* IMAGE CONTROLS */}
+        <label>Brightness</label>
+        <input
+          type="range"
+          min="50"
+          max="150"
+          value={brightness}
+          onChange={(e) => setBrightness(e.target.value)}
+        />
+
+        <label>Grayscale</label>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={grayscale}
+          onChange={(e) => setGrayscale(e.target.value)}
+        />
+
+        <br /><br />
+
+        <button onClick={() => setRotate(rotate + 90)}>Rotate</button>
+        <button onClick={() => setFlip(!flip)}>Flip</button>
+
+        <br /><br />
+
+        <button onClick={downloadImage} style={{ width: "100%" }}>
+          Download / Print
+        </button>
+      </div>
+
+      {/* RIGHT PANEL */}
+      <div style={{ flex: 1 }}>
+        <h3>A4 Preview</h3>
+
+        <div style={{
+          background: "#ddd",
+          padding: 20,
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 10
+        }}>
+          {image &&
+            Array.from({ length: count }).map((_, i) => (
+              <img
+                key={i}
+                src={image}
+                style={{
+                  width: "100%",
+                  height: 120,
+                  objectFit: "cover",
+                  transform: `rotate(${rotate}deg) scaleX(${flip ? -1 : 1})`,
+                  filter: `brightness(${brightness}%) grayscale(${grayscale}%)`,
+                  border: "1px solid #000"
+                }}
+              />
+            ))}
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
