@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,13 +16,17 @@ export default function Login() {
       return;
     }
 
-    alert("Login Success (Demo)");
+    // 👉 Demo login (baad me firebase add karenge)
+    localStorage.setItem("user", email);
+
+    // 🔥 Redirect to dashboard
+    router.push("/dashboard");
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2>Login</h2>
+        <h2 style={{ textAlign: "center" }}>Login</h2>
 
         <input
           placeholder="Mobile / Gmail"
@@ -44,7 +51,7 @@ export default function Login() {
           <Link href="/forgot">Forgot Password?</Link>
         </div>
 
-        <p>
+        <p style={{ textAlign: "center" }}>
           Don't have account? <Link href="/signup">Signup</Link>
         </p>
 
@@ -67,34 +74,37 @@ const styles = {
     height: "100vh",
     justifyContent: "center",
     alignItems: "center",
-    background: "#f5f5f5",
+    background: "linear-gradient(to right, #4facfe, #00f2fe)",
   },
   card: {
     background: "#fff",
     padding: 25,
-    borderRadius: 10,
-    width: 300,
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    borderRadius: 12,
+    width: 320,
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
   },
   input: {
     width: "100%",
-    padding: 10,
-    marginBottom: 10,
+    padding: 12,
+    marginBottom: 12,
     border: "1px solid #ccc",
-    borderRadius: 5,
+    borderRadius: 6,
   },
   button: {
     width: "100%",
-    padding: 10,
-    background: "green",
+    padding: 12,
+    background: "#007bff",
     color: "#fff",
     border: "none",
-    borderRadius: 5,
+    borderRadius: 6,
+    fontWeight: "bold",
+    cursor: "pointer",
   },
   links: {
     marginTop: 10,
     marginBottom: 10,
     fontSize: 14,
+    textAlign: "right",
   },
   whatsapp: {
     display: "block",
